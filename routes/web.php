@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProblemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +21,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get ('/problems/create', [ProblemController::class,'create'])
+          ->name('problems.create');
+    Route::post('/problems',        [ProblemController::class,'store'])
+          ->name('problems.store');
+});
+Route::get('/problems/{problem:slug}', [ProblemController::class,'show'])
+      ->name('problems.show');
 
 require __DIR__.'/auth.php';
